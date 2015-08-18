@@ -1,0 +1,77 @@
+
+
+apiexp tests.json
+
+test.json:
+
+{
+    api_type: "jsonp",
+    base_url: "http://abc.com",
+    auth: {
+
+    },
+    tests: [
+        {
+            "/users": {}
+        }
+    ]
+}
+
+
+{
+    tests: [
+        {
+            "name": "Get date",
+            "uri": "https://abc.com/date",
+            "type": "jsonp",
+            "expectation": {
+                "http_code": 200
+                "format": {
+                    type: "string",
+                    format: "/[0-9]{4}-[0-9]{2}-[0-9]{2}/"
+                }
+            }
+        },
+        {
+            "name": "List of users",
+            "uri": "https://abc.com/users",
+            "type": "jsonp",
+            "expectation": {
+                "http_code": 200
+                "format": {
+                    type: "array",
+                    format: {
+                        qty: "1+"
+
+                }
+            }
+        }
+    ]
+}
+
+{
+    "format": "easy:1.0"
+    "base_uri": "https://abc.com",
+    "type": "jsonp",
+    "extra_values": "erroneous|optional",
+    "expectations": [
+        {
+            "uri": "/date",
+            "expectation": "/[0-9]{4}-[0-9]{2}-[0-9]{2}/"
+        },
+        {
+            "uri": "/users",
+            "type": "json",
+            "expectation": [
+                {
+                    'name': 'string',
+                    'address': {
+                        'street': 'string'
+                    }
+                },
+                "1+"
+            }
+        }
+    ]
+}
+
