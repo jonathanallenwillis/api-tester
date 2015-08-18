@@ -1,0 +1,12 @@
+{
+  "name": "quickmire/api-expectations",
+  "description": "A tool to ensure Web APIs are functioning as expected.",
+  "minimum-stability": "dev",
+  "license": "GPL-2.0",
+  "authors": [
+    {
+      "name": "Jonathan Willis",
+      "email": "jonathanwillis_linux.com"
+    }
+  ]
+}
