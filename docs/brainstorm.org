@@ -75,3 +75,22 @@ test.json:
     ]
 }
 
+
+
+AbstractDefinitions
+-> EasyDefinitions
+
+AbstractApi
+-> JsonpApi
+-> SoapApi
+
+$response = $api->fetch('/date')
+
+assert($response->getStatusCode(), 200);
+
+assertExpectation($response, $expected)
+
+Expectation
+-> RegexExpectation
+-> ArrayExpectation
+-> SimpleExpecation
