@@ -1,7 +1,8 @@
 <?php namespace Quickmire\ApiTester;
+use Quickmire\ApiTester\Expectations\ArrayExpectation;
 use Quickmire\ApiTester\Expectations\MapExpectation;
 use Quickmire\ApiTester\Expectations\RegexExpectation;
-use Quickmire\ApiTester\Expectations\SimpleExpectation;
+use Quickmire\ApiTester\Expectations\TypeExpectation;
 
 /**
  * Created by PhpStorm.
@@ -18,7 +19,7 @@ class Expectation
     public function __construct($definition)
     {
         $this->definition = $definition;
-        $this->expectation = $this->resolver($definition);
+        $this->expectation = self::resolver($definition);
     }
 
     public function assert($data)
@@ -26,23 +27,35 @@ class Expectation
         return $this->expectation->assert($data);
     }
 
-    public function resolver($definition)
+    public function getMessages()
     {
-        if ( $this->isMap($definition) ) {
-            return new MapExpectation($definition);
-        } elseif( $this->isRegex($definition) ) {
-            return new RegexExpectation($definition);
-        }
-        return new SimpleExpectation($definition);
+        return $this->expectation->getMessages();
     }
 
-    protected function isMap($definition)
+    static public function resolver($definition)
+    {
+        if ( self::isMap($definition) ) {
+            return new MapExpectation($definition);
+        } elseif( self::isArray($definition) ) {
+            return new ArrayExpectation($definition);
+        } elseif( self::isRegex($definition) ) {
+            return new RegexExpectation($definition);
+        }
+        return new TypeExpectation($definition);
+    }
+
+    static protected function isMap($definition)
     {
         return is_array($definition)
                 && array_keys($definition)!==range(0, count($definition)-1);
     }
 
-    protected function isRegex($str)
+    public static function isArray($definition)
+    {
+        return is_array($definition)
+                && array_keys($definition)===range(0, count($definition)-1);
+    }
+    static protected function isRegex($str)
     {
         // @TODO find better way
         return $str[0]===$str[strlen($str)-1];

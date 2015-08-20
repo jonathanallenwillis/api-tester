@@ -14,9 +14,16 @@ use Quickmire\ApiTester\ExpectationInterface;
 abstract class AbstractExpectation
     implements ExpectationInterface
 {
+    protected $messages;
     protected $definition;
     public function __construct($definition)
     {
         $this->definition = $definition;
+        $this->messages = array();
+    }
+
+    public function getMessages()
+    {
+        return $this->messages;
     }
 }

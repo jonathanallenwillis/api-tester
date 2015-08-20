@@ -12,6 +12,11 @@ class RegexExpectation
 {
     public function assert($data)
     {
-        return preg_match($this->definition, $data)===1;
+        $this->messages = array();
+        if( preg_match($this->definition, $data)!==1 ) {
+            $this->messages[] = "Failed asserting data [$data] matches regex [{$this->definition}].";
+            return false;
+        }
+        return true;
     }
 }

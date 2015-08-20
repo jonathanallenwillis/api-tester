@@ -25,12 +25,11 @@ class ExpectationTest
     public function can_assert_simple_expectations()
     {
         $types = array(
+            'object'    => new \stdClass(),
             'string'    => 'This is a string',
             'boolean'   => true,
             'integer'   => 123,
             'double'    => 3.4,
-            'object'    => new \stdClass(),
-            'array'     => array( 1, 2, '3'),
             'NULL'      => null
         );
         foreach( $types as $type=>$example ) {
@@ -85,6 +84,69 @@ class ExpectationTest
             'is_male'   => true,
             'birthdate' => '1999/12/21'
         );
+        $exp = new Expectation($expectation);
+        $this->assertTrue($exp->assert($data));
+
+
+        $data = array(
+            'address'   => array(
+                'civic#'=> 123,
+                'street'=> 'main',
+            ),
+            'is_male'   => 'asdf',
+            'birthdate' => '1999/12/2'
+        );
+        $exp = new Expectation($expectation);
+        $this->assertFalse($exp->assert($data));
+    }
+
+    /**
+     * @test
+     */
+    public function can_assert_arrays_of_data()
+    {
+
+        $expectation = array(
+            array(
+                'name'      => 'string',
+                'address'   => array(
+                    'civic#'=> 'integer',
+                    'street'=> 'string',
+                ),
+                'is_male'   => 'boolean',
+                'birthdate' => '~[0-9]{4}/[0-9]{2}/[0-9]{2}~'
+            ), '1+'
+        );
+        $data = array(
+            array(
+                'name'      => 'jo blo',
+                'address'   => array(
+                    'civic#'=> 123,
+                    'street'=> 'main',
+                ),
+                'is_male'   => true,
+                'birthdate' => '1999/12/21'
+            ),
+            array(
+                'name'      => 'jo blo',
+                'address'   => array(
+                    'civic#'=> 123,
+                    'street'=> 'main',
+                ),
+                'is_male'   => true,
+                'birthdate' => '1999/12/21'
+            ),
+            array(
+                'name'      => 'jo blo',
+                'address'   => array(
+                    'civic#'=> 123,
+                    'street'=> 'main',
+                ),
+                'is_male'   => true,
+                'birthdate' => '1999/12/21'
+            ),
+        );
+
         $exp = new Expectation($expectation);
         $this->assertTrue($exp->assert($data));
     }

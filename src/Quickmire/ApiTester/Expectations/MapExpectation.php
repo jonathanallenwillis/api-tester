@@ -9,23 +9,25 @@
 namespace Quickmire\ApiTester\Expectations;
 
 
+use Quickmire\ApiTester\Expectation;
+
 class MapExpectation
     extends AbstractExpectation
 {
     public function assert($data)
     {
+        $this->messages = array();
         foreach( $this->definition as $field => $type ) {
             if ( isset($data[$field]) ) {
-                if ( is_array($type) ) {
-
-                } else {
-                    if( !Expectation::resolver($type)->assert($data[$field]) ) {
-                        $messages[] = "Field $field did not pass expectation $type with value [{$data[$field]}]";
-                    }
+                $expectation = Expectation::resolver($type);
+                if( !$expectation->assert($data[$field]) ) {
+                    $this->messages = array_merge($this->messages, $expectation->getMessages());
                 }
+                unset($data[$field]);
             } else {
-                $messages[] = 'Missing field $field';
+                $this->messages[] = "Missing field $field";
             }
         }
+        return empty($this->messages);
     }
 }
