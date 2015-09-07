@@ -93,4 +93,28 @@ assertExpectation($response, $expected)
 Expectation
 -> RegexExpectation
 -> ArrayExpectation
--> SimpleExpecation
+-> SimpleExpectation
+
+
+Resource/
+- Loaders/
+-- Scheme/
+--- FileLoader
+--- HttpLoader
+--- FtpLoader
+-- Format/
+--- JsonLoader
+
+$l = new UniversalLoader();
+$l->load($resource);
+where $resource can be of the format:
+
+uri
+file path (relative/absolute)
+
+fetch -> format parse -> definition execution
+
+$data = new HttpFetcher()->fetch()
+return new YamlParser()->parse($data);
+
+application/json

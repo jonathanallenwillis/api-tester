@@ -14,4 +14,5 @@ interface FetcherInterface
     public function setResource($resource);
     public function getContents();
     public function getContentType();
+    public function supports($resource);
 }

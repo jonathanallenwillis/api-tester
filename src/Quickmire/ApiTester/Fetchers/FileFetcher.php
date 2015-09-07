@@ -31,4 +31,13 @@ class FileFetcher
     {
         return pathinfo($this->path, PATHINFO_EXTENSION);
     }
+
+    public function supports($resource)
+    {
+        $parts = parse_url($resource);
+
+        $scheme = isset($parts['scheme']) ? $parts['scheme'] : 'file';
+
+        return $scheme==='file';
+    }
 }
