@@ -11,36 +11,76 @@ namespace Quickmire\ApiTester;
 
 class Definition 
 {
-    protected $definition;
+    protected $definitions;
+    protected $baseOptions;
 
-    public function __construct(array $definition)
+    public function __construct(array $definitions)
     {
-        if( $this->isValid($definition) ) {
-            $this->definition = $definition;
-        } else {
-            throw new \Exception('Invalid definition');
+        $this->validate($definitions);
+
+        $this->definitions = $definitions;
+
+        $this->baseOptions = $this->parseBaseOptions($definitions);
+
+    }
+
+    public function getExpectations()
+    {
+        $self = $this;
+        $baseOptions = $this->baseOptions;
+        return array_map(function($expectation) use($baseOptions) {
+            if( !isset($expectation['uri']) ) {
+                throw new \Exception('Missing field uri!');
+            }
+            if( null===parse_url($expectation['uri'], PHP_URL_SCHEME) ) {
+                $uri = $baseOptions['base_uri'] . $expectation['uri'];
+            } else {
+                $uri = $expectation['uri'];
+            }
+
+            if ( isset($expectation['type']) ) {
+                $type = $expectation['type'];
+            } else {
+                if ( isset($baseOptions['type']) ) $type = $baseOptions['type'];
+                else throw new \Exception('Missing type field.');
+            }
+
+            if ( !isset($expectation['expected']) ) throw new \Exception('Missing expected field.');
+
+            return array(
+                'uri'       => $uri,
+                'type'      => $type,
+                'expected'  => $expectation['expected']
+            );
+        }, $this->definitions['expectations']);
+    }
+
+    protected function parseBaseOptions($definition)
+    {
+        return $this->collectFields($definition, array('base_uri'=>'', 'type'=>null));
+    }
+
+    protected function collectFields(array $data, $fields)
+    {
+        $subset = array();
+        foreach( $fields as $fieldName=>$defaultValue ) {
+            if( isset($data[$fieldName]) ) {
+                $subset[$fieldName] = $data[$fieldName];
+            } else {
+                if( null!==$defaultValue ) {
+                    $subset[$fieldName] = $defaultValue;
+                }
+            }
         }
-
-//        foreach( $definitions as $definition ) {
-//            $response = $loader->load($definition['uri']);
-//            $expectation = new Expectation($definition['expectation']);
-//            $expectation->assert($response->getContents());
-//        }
+        return $subset;
     }
 
-    protected function isValid(array $definition)
+    protected function validate(array $definitions)
     {
-        $m = $this->validate($definition);
-        return empty($m);
-    }
-
-    protected function validate(array $definition)
-    {
-        $messages = array();
-        if( !isset($definition['expectations']) ) {
-            $messages[] = 'Missing expectations field.';
+        if( !isset($definitions['expectations']) ) {
+            throw new \Exception('Missing expectations field.');
         }
-        return $messages;
     }
+
 
 }

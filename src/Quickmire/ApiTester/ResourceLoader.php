@@ -9,6 +9,7 @@
 namespace Quickmire\ApiTester;
 
 
+use Quickmire\ApiTester\FetcherResolvers\DirectoryResolver;
 use Quickmire\ApiTester\Fetchers\FileFetcher;
 use Symfony\Component\Yaml\Yaml;
 
@@ -16,26 +17,28 @@ class ResourceLoader
 {
     protected $fetcherResolver;
 
-    public function __construct(FetcherResolverInterface $fetcherResolver)
+    public function __construct(FetcherResolverInterface $fetcherResolver = null)
     {
-        $this->fetcherResolver = $fetcherResolver;
+        $this->fetcherResolver = null===$fetcherResolver
+                                    ? new DirectoryResolver()
+                                    : $fetcherResolver;
     }
 
     public function load($path)
     {
         $content = $this->fetch($path);
-        return $this->parse($content, $this->guessType($path));
+        return $this->parse($content, $this->getType($path));
+    }
+
+    public function getType($uri)
+    {
+        return $this->fetcherResolver->resolve($uri)->getContentType();
     }
 
     protected function fetch($uri)
     {
 
-        return $this->fetcherResolver->resolve($uri)->setResource($uri)->getContents();
-    }
-
-    protected function guessType($uri)
-    {
-        return $this->fetcherResolver->resolve($uri)->setResource($uri)->getContentType();
+        return $this->fetcherResolver->resolve($uri)->getContents();
     }
 
     protected function parse($content, $type)

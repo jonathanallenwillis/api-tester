@@ -32,9 +32,11 @@ class HttpFetcher
 
     public function setResource($uri)
     {
-        $this->uri = $uri;
-        $this->contents = null;
-        $this->contentType = null;
+        if ( $uri!==$this->uri ) {
+            $this->uri = $uri;
+            $this->contents = null;
+            $this->contentType = null;
+        }
         return $this;
     }
 

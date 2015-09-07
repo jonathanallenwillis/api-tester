@@ -29,6 +29,7 @@ class DirectoryResolver
     {
         foreach( $this->getFetchers() as $fetcher ) {
             if( $fetcher->supports($resource) ) {
+                $fetcher->setResource($resource);
                 return $fetcher;
             }
         }

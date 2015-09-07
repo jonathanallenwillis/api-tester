@@ -24,25 +24,6 @@ class ResourceLoaderTest
                             'd' => null
                             )
                         );
-    public function setUp()
-    {
-
-    }
-    protected function createFixture($filename, $data, $type='txt')
-    {
-        $dir = __DIR__ . '/../../fixtures';
-        $path = "{$dir}/{$filename}";
-
-        switch(strtolower($type)) {
-            case 'yml':     $content = Yaml::dump($data); break;
-            case 'json':    $content = json_encode($data, JSON_PRETTY_PRINT); break;
-            case 'txt':     $content = $data; break;
-            default:        throw new \Exception('Testing error, unknown type');
-        }
-
-        file_put_contents($path, $content);
-        return realpath($path);
-    }
 
     /**
      * @test
@@ -85,17 +66,20 @@ class ResourceLoaderTest
 
     }
 
-    /**
-     * @test
-     */
-//    public function can_load_a_http_resource()
-//    {
-//        $expected = $this->data;
-//        $l = new ResourceLoader();
-//        $actual = $l->load('http://ip-api.com/json');
-//        $this->assertEquals($expected, $actual);
-//
-//    }
 
+    protected function createFixture($filename, $data, $type='txt')
+    {
+        $dir = __DIR__ . '/../../fixtures';
+        $path = "{$dir}/{$filename}";
 
+        switch(strtolower($type)) {
+            case 'yml':     $content = Yaml::dump($data); break;
+            case 'json':    $content = json_encode($data, JSON_PRETTY_PRINT); break;
+            case 'txt':     $content = $data; break;
+            default:        throw new \Exception('Testing error, unknown type');
+        }
+
+        file_put_contents($path, $content);
+        return realpath($path);
+    }
 }

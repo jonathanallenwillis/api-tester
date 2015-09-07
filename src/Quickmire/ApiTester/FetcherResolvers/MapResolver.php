@@ -34,7 +34,12 @@ class MapResolver
     public function resolve($uriOrPath)
     {
         $scheme = $this->guessScheme($uriOrPath);
-        if( isset($this->map[$scheme]) ) return $this->create($this->map[$scheme]);
+
+        if( isset($this->map[$scheme]) ) {
+            $fetcher = $this->create($this->map[$scheme]);
+            $fetcher->setResource($uriOrPath);
+            return $fetcher;
+        }
 
         throw new \Exception('Unresolvable: ' . $uriOrPath);
     }
