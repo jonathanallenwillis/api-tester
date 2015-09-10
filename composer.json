@@ -1,6 +1,7 @@
 {
   "name": "quickmire/api-expectations",
   "description": "A tool to ensure Web APIs are functioning as expected.",
+  "version": "0.1.0",
   "minimum-stability": "dev",
   "license": "GPL-2.0",
   "authors": [
@@ -10,9 +11,10 @@
   ],
 
   "require": {
-    "symfony/console":    "v2.7.3",
+    "symfony/console":    "v2.7.4",
     "guzzlehttp/guzzle":  "6.0.2",
-    "symfony/config": "^3.0@dev"
+    "symfony/config": "v2.7.4",
+    "symfony/finder": "v2.7.4"
   },
 
   "require-dev": {
