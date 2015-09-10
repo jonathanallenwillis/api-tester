@@ -31,7 +31,9 @@ class ExpectationTester
                 }
             }
             $expectation = new Expectation($definition['expected']);
-            $expectation->assert($loader->load($definition['uri']));
+            if( !$expectation->assert($loader->load($definition['uri'])) ) {
+                throw new FailedExpectationException(implode("\n", $expectation->getMessages()));
+            }
         }
         return true;
     }
