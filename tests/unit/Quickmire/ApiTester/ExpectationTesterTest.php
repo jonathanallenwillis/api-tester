@@ -60,7 +60,7 @@ class ExpectationTesterTest
             $tester->test();
             $this->fail('Failed asserting FailedExpectationException');
         } catch (FailedExpectationException $e) {
-            $this->assertRegExp('/Type mismatch for .*\/tests\/fixtures\/date\.json\. Got \[json\] but expected \[yml\]/', $e->getMessage());
+            $this->assertRegExp('/Type mismatch for .*date\.json\. Got \[json\] but expected \[yml\]/', $e->getMessage());
         }
 
     }
@@ -68,7 +68,7 @@ class ExpectationTesterTest
     /**
      * @test
      */
-    public function c()
+    public function throws_failedexpectation_when_testing_invalid_data()
     {
         $path = __DIR__ . '/../../fixtures/definition_invalid.json';
         $tester = new ExpectationTester($path);

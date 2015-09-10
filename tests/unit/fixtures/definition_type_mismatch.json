@@ -8,5 +8,5 @@
             }
         }
     ],
-    "base_uri": "\/home\/jz\/projects\/php\/api-expectations\/tests\/fixtures"
+    "base_uri": ".\/tests\/unit\/fixtures"
 }

@@ -2,11 +2,11 @@
     "type": "json",
     "expectations": [
         {
-            "uri": "\/date_invalid.json",
+            "uri": "\/date.json",
             "expected": {
                 "date": "\/[0-9]{4}-[0-9]{2}-[0-9]{2}\/"
             }
         }
     ],
-    "base_uri": "\/home\/jz\/projects\/php\/api-expectations\/tests\/fixtures"
+    "base_uri": ".\/tests\/unit\/fixtures"
 }
