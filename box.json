@@ -1,0 +1,15 @@
+{
+  "directories":  [ "src", "vendor" ],
+  "files":        [],
+  "finder":       [
+    {
+      "name":     "*.php",
+      "exclude":  ["Tests", "tests"],
+      "in":       "."
+    }
+  ],
+  "git-version":  "package_version",
+  "main":         "bin/api-tester.php",
+  "output":       "build/api-tester.phar",
+  "stub":         true
+}

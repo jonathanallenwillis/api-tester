@@ -10,6 +10,7 @@ namespace Quickmire\ApiTester\FetcherResolvers;
 
 
 use Quickmire\ApiTester\FetcherResolverInterface;
+use Symfony\Component\Finder\Finder;
 
 class DirectoryResolver
     implements FetcherResolverInterface
@@ -42,12 +43,13 @@ class DirectoryResolver
             $this->fetchers = array();
             foreach ($this->directories as $maybeNamespace => $directory) {
                 if (file_exists($directory)) {
-                    foreach (glob(realpath($directory) . '/' . '*Fetcher.php') as $filename) {
+                    $finder = new Finder();
+                    $finder->files()->name('*Fetcher.php')->in($directory);
+                    foreach ($finder as $file) {
                         $namespace = is_int($maybeNamespace)
-                            ? $this->getNamespace($filename)
+                            ? $this->getNamespace($file->getContents())
                             : $maybeNamespace;
-                        require_once $filename;
-                        $className = $namespace . '\\' . pathinfo($filename, PATHINFO_FILENAME);
+                        $className = $namespace . '\\' . pathinfo($file->getFilename(), PATHINFO_FILENAME);
                         $this->fetchers[] = new $className();
                     }
                 }

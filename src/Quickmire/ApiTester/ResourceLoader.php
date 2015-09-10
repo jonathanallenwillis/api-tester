@@ -37,7 +37,6 @@ class ResourceLoader
 
     protected function fetch($uri)
     {
-
         return $this->fetcherResolver->resolve($uri)->getContents();
     }
 

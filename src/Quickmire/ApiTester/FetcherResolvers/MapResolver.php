@@ -46,7 +46,7 @@ class MapResolver
 
     protected function create($fetcher)
     {
-        if( is_string($fetcher) ) return new $fetcher();
+        if( is_string($fetcher) && class_exists($fetcher) ) return new $fetcher();
 
         if( $fetcher instanceof FetcherInterface ) return $fetcher;
 
