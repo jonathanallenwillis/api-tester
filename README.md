@@ -1,4 +1,4 @@
-
+[![Build Status](https://travis-ci.org/jonjitsu/api-tester.svg)](https://travis-ci.org/jonjitsu/api-tester)
 
 # Web API tester
 
